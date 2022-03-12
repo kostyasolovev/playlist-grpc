@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package api;
+
+service YoutubePlaylist {
+    rpc List(PlaylistRequest) returns (PlaylistResponse) {}
+}
+
+message PlaylistRequest {
+    string id = 1;
+}
+
+message PlaylistResponse {
+    string err = 1;
+    repeated string item = 2;
+}
