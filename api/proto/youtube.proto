@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package api;
 
-option go_package = "./;ytpb";
+option go_package = "./;api";
 
 service YoutubePlaylist {
     rpc List(PlaylistRequest) returns (PlaylistResponse) {}
