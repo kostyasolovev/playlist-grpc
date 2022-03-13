@@ -12,8 +12,11 @@ import (
 )
 
 type YoutubeGRPCServer struct {
+	// youtube client
 	ytService *youtube.Service
-	getFunc   func(string) ([]string, error)
+	// функция обработки респонсов от youtube api
+	getFunc func(string) ([]string, error)
+	// реализация интерфейса YoutubePlaylistServer.
 	api.UnimplementedYoutubePlaylistServer
 }
 
