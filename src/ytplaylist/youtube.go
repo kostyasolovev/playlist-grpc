@@ -18,7 +18,7 @@ func NewYTServiceWithApiKey(ctx context.Context, key string) (*youtube.Service, 
 	return service, nil
 }
 
-// делает запрос на получение плейлиста к Youtube API.
+// запрос на получение плейлиста по playlistId к Youtube API.
 func GetYoutubePlaylist(ctx context.Context, service *youtube.Service, id string, limit int64, parts ...string) (*youtube.PlaylistItemListResponse, error) {
 	call := service.PlaylistItems.List(parts)
 	call = call.MaxResults(limit)

@@ -14,6 +14,7 @@ import (
 type YoutubeGRPCServer struct {
 	ytService *youtube.Service
 	getFunc   func(string) ([]string, error)
+	api.UnimplementedYoutubePlaylistServer
 }
 
 // реализация интерфейса YoutubePlaylistServer.
@@ -45,7 +46,7 @@ func (grpcServ *YoutubeGRPCServer) Setup(ctx context.Context, cfg *config.Config
 	grpcServ.ytService = service
 	// youtube response handler
 	grpcServ.getFunc = func(playlistId string) ([]string, error) {
-		var ansLimit int64 = 10
+		var ansLimit int64 = 10 // лимит элементов
 
 		ytResponse, err := ytplaylist.GetYoutubePlaylist(ctx, grpcServ.ytService,
 			playlistId, ansLimit, "snippet", "contentDetails")
@@ -59,7 +60,7 @@ func (grpcServ *YoutubeGRPCServer) Setup(ctx context.Context, cfg *config.Config
 			if i >= int(ansLimit)-1 {
 				break
 			}
-
+			// нас интересуют только айдишники
 			ans = append(ans, v.ContentDetails.VideoId)
 		}
 
