@@ -26,7 +26,7 @@ func GetYoutubePlaylist(ctx context.Context, service *youtube.Service, id string
 	call = call.PlaylistId(id)
 	response, err := call.Do()
 	if err != nil {
-		return nil, errors.Wrap(err, "GetYoutubePlaylist")
+		return nil, err
 	}
 
 	return response, nil

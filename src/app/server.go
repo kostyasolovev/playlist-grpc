@@ -2,10 +2,12 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"grpc-server/config"
 	"grpc-server/pkg/api"
 	"grpc-server/src/ytplaylist"
 
+	"google.golang.org/api/googleapi"
 	"google.golang.org/api/youtube/v3"
 )
 
@@ -14,18 +16,34 @@ type YoutubeGRPCServer struct {
 	getFunc   func(string) ([]string, error)
 }
 
-func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequest) (*api.PlaylistResponse, error) {
-	// items, err := grpcServ.getFunc(fmt.Sprintf(""))
-	return &api.PlaylistResponse{}, nil
+// реализация интерфейса YoutubePlaylistServer.
+func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequest) (resp *api.PlaylistResponse, err error) {
+	// GET request to youtube api
+	ans, err := grpcServ.getFunc(r.Id)
+	if err != nil {
+		if gerr, ok := err.(*googleapi.Error); !ok || gerr.Code != 404 {
+			resp.Err = "internal server error"
+		} else {
+			// 404 statusNotFound
+			resp.Err = fmt.Sprintf("playlist with Id [%s] not found", r.Id)
+		}
+	}
+
+	resp.Item = append(resp.Item, ans...)
+
+	return resp, err
 }
 
+// настраиваем YoutubeGRPCServer.
 func (grpcServ *YoutubeGRPCServer) Setup(ctx context.Context, cfg *config.Config) error {
+	// youtube api client
 	service, err := ytplaylist.NewYTServiceWithApiKey(ctx, cfg.YoutubeApiKey)
 	if err != nil {
 		return err
 	}
 
 	grpcServ.ytService = service
+	// youtube response handler
 	grpcServ.getFunc = func(playlistId string) ([]string, error) {
 		var ansLimit int64 = 10
 
