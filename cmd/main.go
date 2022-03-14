@@ -7,10 +7,11 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"playlist-grpc/config"
-	"playlist-grpc/pkg/api"
-	"playlist-grpc/src/app"
 	"syscall"
+
+	"github.com/kostyasolovev/playlist-grpc/config"
+	"github.com/kostyasolovev/playlist-grpc/pkg/api"
+	"github.com/kostyasolovev/playlist-grpc/src/app"
 
 	"google.golang.org/grpc"
 )
