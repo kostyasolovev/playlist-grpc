@@ -31,6 +31,7 @@ func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequ
 		} else {
 			// 404 statusNotFound
 			resp.Err = fmt.Sprintf("playlist with Id [%s] not found", r.Id)
+			err = nil
 		}
 	}
 
