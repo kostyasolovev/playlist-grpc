@@ -1,4 +1,4 @@
-module grpc-server
+module playlist-grpc
 
 go 1.17
 
