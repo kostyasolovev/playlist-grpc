@@ -3,9 +3,9 @@ package app
 import (
 	"context"
 	"fmt"
-	"grpc-server/config"
-	"grpc-server/pkg/api"
-	"grpc-server/src/ytplaylist"
+	"playlist-grpc/config"
+	"playlist-grpc/pkg/api"
+	"playlist-grpc/src/ytplaylist"
 
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/youtube/v3"

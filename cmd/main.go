@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"flag"
-	"grpc-server/config"
-	"grpc-server/pkg/api"
-	"grpc-server/src/app"
 	"log"
 	"net"
 	"os"
 	"os/signal"
+	"playlist-grpc/config"
+	"playlist-grpc/pkg/api"
+	"playlist-grpc/src/app"
 	"syscall"
 
 	"google.golang.org/grpc"
