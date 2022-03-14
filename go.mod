@@ -1,4 +1,4 @@
-module github.com/kostyasolovev/playlist-grpc/v1
+module github.com/kostyasolovev/playlist-grpc
 
 go 1.17
 
