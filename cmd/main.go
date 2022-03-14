@@ -9,6 +9,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"google.golang.org/grpc"
 )
@@ -31,7 +33,15 @@ func main() {
 		cfg.YoutubeApiKey = (*cfgPath)
 	}
 
-	ctx := context.TODO()
+	ctx, finish := context.WithCancel(context.Background())
+	// handle system signals
+	exitChan := make(chan os.Signal, 1)
+	signal.Notify(exitChan, syscall.SIGTERM, syscall.SIGINT)
+	// kill all processes that use ctx
+	go func() {
+		<-exitChan
+		finish()
+	}()
 	// router
 	grpcServer := grpc.NewServer()
 	// handler
@@ -47,6 +57,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	// shutdown by call
+	go func() {
+		<-ctx.Done()
+		grpcServer.Stop()
+	}()
 	// run the server
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal(err)
