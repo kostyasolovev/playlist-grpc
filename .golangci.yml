@@ -1,0 +1,171 @@
+linters-settings:
+  dupl:
+    threshold: 100
+  funlen:
+    lines: 100
+    statements: 50
+  gci:
+    local-prefixes: github.com/golangci/golangci-lint
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - dupImport # https://github.com/go-critic/go-critic/issues/845
+      - ifElseChain
+      - octalLiteral
+      - whyNoLint
+      - wrapperFunc
+  gocyclo:
+    min-complexity: 15
+  goimports:
+    local-prefixes: github.com/golangci/golangci-lint
+  gomnd:
+    settings:
+      mnd:
+        # don't include the "operation" and "assign"
+        checks: 
+          - argument
+          - case
+          - condition
+          - return
+  govet:
+    check-shadowing: true
+  lll:
+    line-length: 140
+  misspell:
+    locale: US
+  nolintlint:
+    allow-leading-space: true # don't require machine-readable nolint directives (i.e. with no leading space)
+    allow-unused: false # report any unused nolint directives
+    require-explanation: false # don't require an explanation for nolint directives
+    require-specific: false # don't require nolint directives to be specific about which linter is being skipped
+  staticcheck:
+    # Select the Go version to target. The default is '1.13'.
+    go: "1.16"
+  stylecheck:
+    # Select the Go version to target. The default is '1.13'.
+    go: "1.16"
+  testpackage:
+    # regexp pattern to skip files
+    skip-regexp: (export|internal)_test\.go
+
+linters:
+  # please, do not use `enable-all`: it's deprecated and will be removed soon.
+  # inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint
+  disable-all: true
+  enable:
+    # BUGS
+    - asciicheck #(bugs, style) Simple linter to check that your code does not contain non-ASCII identifiers
+    - bodyclose #(performance, bugs) checks whether HTTP response body is closed successfully
+    - errcheck #(bugs, error) Errcheck is a program for checking for unchecked errors in go programs. These unchecked errors can be critical bugs in some cases
+    - exhaustive #(bugs) Check exhaustiveness of enum switch statements
+    - exportloopref #(bugs) checks for pointers to enclosing loop variables
+    - gosec #(bugs) Inspects source code for security problems
+    - govet #(bugs, metalinter) Vet examines Go source code and reports suspicious constructs, such as Printf calls whose arguments do not align with the format string
+    - noctx #(performance, bugs) noctx finds sending http request without context.Context
+    - rowserrcheck #(bugs, sql) checks whether Err of rows is checked successfully
+    - staticcheck #(bugs, metalinter) is a go vet on steroids, applying a ton of static analysis checks
+    - typecheck #(bugs) Like the front-end of a Go compiler, parses and type-checks Go code
+    - durationcheck #(bugs) check for two durations multiplied together
+    - errorlint #(bugs, error) errorlint is a linter for that can be used to find code that will cause problems with the error wrapping scheme introduced in Go 1.13.
+    - nilerr #(bugs) Finds the code that returns nil even if it checks that the error is not nil.
+    - sqlclosecheck #(bugs, sql) Checks that sql.Rows and sql.Stmt are closed.
+    - makezero #(style, bugs) Finds slice declarations with non-zero initial length
+
+    # STYLE
+    - forbidigo #(style) Forbids identifiers
+    - wrapcheck #(style, error) Checks that errors returned from external packages are wrapped
+    - depguard #(style, import, module) Go linter that checks if package imports are in a list of acceptable packages
+    - dogsled #(style) Checks assignments with too many blank identifiers (e.g. x, , , _, := f())
+    - dupl #(style) Tool for code clone detection
+    # - goerr113 #(style, error) Golang linter to check the errors handling expressions
+    - godot #(style, comment) Check if comments end in a period
+    - gochecknoinits #(style) Checks that no init functions are present in Go code
+    - gochecknoglobals #(style) A global variable is a variable declared in package scope and that can be read and written to by any function within the package. Global variables can cause side effects which are difficult to keep track of. A code in one function may change the variables state while another unrelated chunk of code may be effected by it.
+    - goconst #(style) Finds repeated strings that could be replaced by a constant
+    - gocritic #(style, metalinter) Provides many diagnostics that check for bugs, performance and style issues. Extensible without recompilation through dynamic rules. Dynamic rules are written declaratively with AST patterns, filters, report message and optional suggestion.
+    - gomnd #(style) An analyzer to detect magic numbers.
+    - goprintffuncname #(style) Checks that printf-like functions are named with f at the end
+    - gosimple #(style) Linter for Go source code that specializes in simplifying a code
+    - lll #(style) Reports long lines
+    - misspell #(style, comment) Finds commonly misspelled English words in comments
+    - nakedret #(style) Finds naked returns in functions greater than a specified function length
+    - nolintlint #(style) Reports ill-formed or insufficient nolint directives
+    - revive #(style, metalinter) Fast, configurable, extensible, flexible, and beautiful linter for Go. Drop-in replacement of golint.
+    - stylecheck #(style) Stylecheck is a replacement for golin
+    - testpackage #(style, test) linter that makes you use a separate _test package
+    - unconvert #(style) Remove unnecessary type conversions
+    - thelper #(style) thelper detects golang test helpers without t.Helper() call and checks the consistency of test helpers
+    - whitespace #(style) Tool for detection of leading and trailing whitespace
+    - wsl #(style) Whitespace Linter - Forces you to use empty lines!
+    - forcetypeassert #(style) finds forced type assertions
+    - goheader #(style) Checks is file header matches to pattern
+    - gomoddirectives #(style, module) Manage the use of 'replace', 'retract', and 'excludes' directives in go.mod.
+    - gomodguard #(style, import, module) Allow and block list linter for direct Go module dependencies. This is different from depguard where there are different block types for example version constraints and module recommendations.
+    - ifshort #(style) Checks that your code uses short syntax for if-statements whenever possible
+    - importas #(style) Enforces consistent import aliases
+    # - nlreturn #(style) nlreturn checks for a new line before return and branch statements to increase code clarity
+    - paralleltest #(style, test) paralleltest detects missing usage of t.Parallel() method in your Go test
+    - predeclared #(style) find code that shadows one of Go's predeclared identifiers
+    - promlinter #(style) Check Prometheus metrics naming via promlint
+    - tparallel #(style, test) tparallel detects inappropriate usage of t.Parallel() method in your Go test codes
+    - wastedassign #(style) wastedassign finds wasted assignment statements.
+
+    # # UNUSED
+    - deadcode #(unused) Finds unused code
+    - ineffassign #(unused) Detects when assignments to existing variables are not used
+    - structcheck #(unused) Finds unused struct fields
+    - unparam #(unused) Reports unused function parameters
+    - unused #(unused) Checks Go code for unused constants, variables, functions and types
+    - varcheck #(unused) Finds unused global variables and constants
+
+    # COMPLEXITY
+    - funlen #(complexity) Tool for detection of long functions
+    - gocognit #(complexity) Computes and checks the cognitive complexity of functions
+    - gocyclo #(complexity) Computes and checks the cyclomatic complexity of functions
+    # - nestif #(complexity) Reports deeply nested if statements
+    # - cyclop #(complexity) checks function and package cyclomatic complexity
+
+    # FORMAT
+    # - goimports #(format, import) In addition to fixing imports, goimports also formats your code in the same style as gofmt.
+    # - gofmt #(format) Gofmt checks whether code was gofmt-ed. By default this tool runs with -s option to check for code simplification
+    - prealloc #(performance) Finds slice declarations that could potentially be preallocated
+    # - gofumpt #(format) Gofumpt checks whether code was gofumpt-ed.
+
+    # DON'T ENABLE:
+    # (not TODO, BUG, FIXME, but want) - godox # Tool for detection of FIXME, TODO and other comment keywords
+    # (don't work with default struct values) - exhaustivestruct #(style, test) Checks if all struct's fields are initialized
+    # (conflicted with other linters) - gci #(format, import) Gci control golang package import order and make it always deterministic.
+    # (conflicted with api) - tagliatelle #(style) Checks the struct tags.
+
+issues:
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gomnd
+
+    # https://github.com/go-critic/go-critic/issues/926
+    - linters:
+        - gocritic
+      text: "unnecessaryDefer:"
+
+run:
+  skip-dirs:
+    - internal/tests
+  skip-files:
+    - _test\.go
+
+# golangci.com configuration
+# https://github.com/golangci/golangci/wiki/Configuration
+service:
+  golangci-lint-version: 1.40.x # use the fixed version to not introduce new linters unexpectedly
+  prepare:
+    - echo "here I can run custom commands, but no preparation needed for this repo"

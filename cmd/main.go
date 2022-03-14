@@ -18,6 +18,7 @@ import (
 
 func main() {
 	var configPath = ""
+
 	var cfg = new(config.Config)
 	// ищем youtube api key
 	cfgPath := flag.String("c", configPath, "path to your config file")
@@ -26,7 +27,7 @@ func main() {
 	if (*cfgPath) == "" {
 		// проверяем глобальную переменную
 		if apiKey := os.Getenv("YTAPIKEY"); apiKey == "" {
-			log.Fatal("you must choose youtube api key: set YTAPIKEY enviroment or pass a config using -c flag")
+			log.Fatal("you must choose youtube api key: set YTAPIKEY environment or pass a config using -c flag")
 		} else {
 			cfg.YoutubeApiKey = apiKey
 		}
@@ -54,7 +55,7 @@ func main() {
 	// register handler in router
 	api.RegisterYoutubePlaylistServer(grpcServer, ytService)
 
-	listener, err := net.Listen("tcp", ":8081")
+	listener, err := net.Listen("tcp", ":8081") // nolint: gosec
 	if err != nil {
 		log.Fatal(err)
 	}

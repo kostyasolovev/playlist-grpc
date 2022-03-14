@@ -7,6 +7,7 @@ import (
 	"github.com/kostyasolovev/playlist-grpc/config"
 	"github.com/kostyasolovev/playlist-grpc/pkg/api"
 	"github.com/kostyasolovev/playlist-grpc/src/ytplaylist"
+	"github.com/pkg/errors"
 
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/youtube/v3"
@@ -25,7 +26,7 @@ type YoutubeGRPCServer struct {
 func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequest) (resp *api.PlaylistResponse, err error) {
 	// GET request to youtube api
 	ans, err := grpcServ.getFunc(r.Id)
-	if err != nil {
+	if err != nil { // nolint: errorlint
 		if gerr, ok := err.(*googleapi.Error); !ok || gerr.Code != 404 {
 			resp.Err = "internal server error"
 		} else {
@@ -45,7 +46,7 @@ func (grpcServ *YoutubeGRPCServer) Setup(ctx context.Context, cfg *config.Config
 	// youtube api client
 	service, err := ytplaylist.NewYTServiceWithApiKey(ctx, cfg.YoutubeApiKey)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "creating youtube service failed")
 	}
 
 	grpcServ.ytService = service
@@ -56,7 +57,7 @@ func (grpcServ *YoutubeGRPCServer) Setup(ctx context.Context, cfg *config.Config
 		ytResponse, err := ytplaylist.GetYoutubePlaylist(ctx, grpcServ.ytService,
 			playlistId, ansLimit, "snippet", "contentDetails")
 		if err != nil {
-			return nil, err
+			return nil, err // nolint: wrapcheck
 		}
 
 		ans := make([]string, 0, ansLimit)
