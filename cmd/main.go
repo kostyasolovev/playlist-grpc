@@ -7,12 +7,11 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"playlist-grpc/config"
+	"playlist-grpc/src/app"
 	"syscall"
 
-	"github.com/kostyasolovev/playlist-grpc/config"
-	"github.com/kostyasolovev/playlist-grpc/pkg/api"
-	"github.com/kostyasolovev/playlist-grpc/src/app"
-
+	api "github.com/kostyasolovev/youtube_pb_api"
 	"google.golang.org/grpc"
 )
 
@@ -32,7 +31,7 @@ func main() {
 			cfg.YoutubeApiKey = apiKey
 		}
 	} else {
-		cfg.YoutubeApiKey = (*cfgPath)
+		config.Parse
 	}
 
 	ctx, finish := context.WithCancel(context.Background())

@@ -3,12 +3,11 @@ package app
 import (
 	"context"
 	"fmt"
+	"playlist-grpc/config"
+	"playlist-grpc/src/ytplaylist"
 
-	"github.com/kostyasolovev/playlist-grpc/config"
-	"github.com/kostyasolovev/playlist-grpc/pkg/api"
-	"github.com/kostyasolovev/playlist-grpc/src/ytplaylist"
+	api "github.com/kostyasolovev/youtube_pb_api"
 	"github.com/pkg/errors"
-
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/youtube/v3"
 )
