@@ -3,13 +3,14 @@ package app
 import (
 	"context"
 	"fmt"
-	"playlist-grpc/config"
-	"playlist-grpc/src/ytplaylist"
 
 	api "github.com/kostyasolovev/youtube_pb_api"
 	"github.com/pkg/errors"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/youtube/v3"
+
+	"playlist-grpc/config"
+	"playlist-grpc/src/ytplaylist"
 )
 
 type YoutubeGRPCServer struct {
@@ -22,7 +23,8 @@ type YoutubeGRPCServer struct {
 }
 
 // реализация интерфейса YoutubePlaylistServer.
-func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequest) (resp *api.PlaylistResponse, err error) {
+func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequest) (*api.PlaylistResponse, error) {
+	resp := new(api.PlaylistResponse)
 	// GET request to youtube api
 	ans, err := grpcServ.getFunc(r.Id)
 	if err != nil { // nolint: errorlint
@@ -43,7 +45,7 @@ func (grpcServ *YoutubeGRPCServer) List(ctx context.Context, r *api.PlaylistRequ
 // настраиваем YoutubeGRPCServer.
 func (grpcServ *YoutubeGRPCServer) Setup(ctx context.Context, cfg *config.Config) error {
 	// youtube api client
-	service, err := ytplaylist.NewYTServiceWithApiKey(ctx, cfg.YoutubeApiKey)
+	service, err := ytplaylist.NewYTServiceWithAPIKey(ctx, cfg.YoutubeAPIKey)
 	if err != nil {
 		return errors.Wrap(err, "creating youtube service failed")
 	}

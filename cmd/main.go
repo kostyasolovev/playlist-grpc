@@ -7,12 +7,13 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"playlist-grpc/config"
-	"playlist-grpc/src/app"
 	"syscall"
 
 	api "github.com/kostyasolovev/youtube_pb_api"
 	"google.golang.org/grpc"
+
+	"playlist-grpc/config"
+	"playlist-grpc/src/app"
 )
 
 func main() {
@@ -28,10 +29,10 @@ func main() {
 		if apiKey := os.Getenv("YTAPIKEY"); apiKey == "" {
 			log.Fatal("you must choose youtube api key: set YTAPIKEY environment or pass a config using -c flag")
 		} else {
-			cfg.YoutubeApiKey = apiKey
+			cfg.YoutubeAPIKey = apiKey
 		}
 	} else {
-		config.Parse
+		config.Parse((*cfgPath), cfg)
 	}
 
 	ctx, finish := context.WithCancel(context.Background())
