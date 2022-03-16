@@ -55,7 +55,7 @@ func main() {
 	// register handler in router
 	api.RegisterYoutubePlaylistServer(grpcServer, ytService)
 
-	listener, err := net.Listen("tcp", ":8081") // nolint: gosec
+	listener, err := net.Listen("tcp", ":8083") // nolint: gosec
 	if err != nil {
 		log.Fatal(err)
 	}
